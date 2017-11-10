@@ -1,0 +1,23 @@
+#!/bin/bash
+[ $# -ne 3 ] && { echo "Usage: $0 [np] [nodefile] [cmd]"; exit 1; }
+
+NP=$1
+NODEFILE=$2
+CMD=$3
+
+[ ! -f $NODEFILE ] && { echo "$NODEFILE not found.  sorry!"; exit 1; }
+
+COUNT=0
+cat $NODEFILE | while read node; do
+	ssh -n $node "$CMD $COUNT $NP $node" & pid[$COUNT]=$!
+	let COUNT+=1
+	sleep 0.1
+done
+while ! [ -f ~/output.txt ];
+do
+    echo "Working!"
+    sleep 1
+done
+cat ~/output.txt
+rm -f ~/endpoints
+rm -f ~/output.txt
