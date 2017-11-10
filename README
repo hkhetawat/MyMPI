@@ -34,27 +34,4 @@ Working!
 1024 7.610377e-02 1.243080e-02 7.579101e-02 1.223515e-02 7.658044e-02 1.249081e-02
 
 *IMPLEMENTATION*
-The implementation has been done using C sockets instead of the provided interface. The library is parallel and can handle more than just the rtt program. Separate linked-lists for messages and requests is implemented for when the MPI_Recv and the actual message do not come at the same time. Mutex has been used to make sure that the list operations are atomic. Conditional variables have also been used to signal the thread waiting on MPI_Recv when the appropriate message has been received for that request. The use of message buffers (in the form of linked-list) ensures that even if threads are waiting on MPI_Recv, the library can still receive messages from all nodes in the system and buffer them. It has support for sending and receiving Integers, Doubles, and Bytes. More data types can be added with just a “#define” in the header file. Overall I believe that this library has been made very versatile and that new features can be added quite easily.
-
-*ANALYSIS*
-OUTPUT for setup with 6 nodes - 
-
-Using mympi.a library:
-16 7.999391e-02 2.910786e-05 8.007646e-02 2.053701e-04 8.098213e-02 4.332692e-05 
-32 7.999404e-02 1.384060e-05 8.000432e-02 6.793987e-06 8.099866e-02 2.125955e-05 
-64 8.033315e-02 4.714651e-04 8.000861e-02 1.263399e-05 8.099736e-02 2.231875e-05 
-128 8.099975e-02 4.777530e-05 8.000276e-02 9.847226e-06 8.099831e-02 3.196412e-05 
-256 8.099800e-02 1.943035e-05 8.000170e-02 1.368785e-05 8.099824e-02 2.958585e-05 
-512 8.099424e-02 7.385377e-05 8.000912e-02 1.749779e-05 8.099378e-02 4.315663e-05 
-1024 7.610377e-02 1.243080e-02 7.579101e-02 1.223515e-02 7.658044e-02 1.249081e-02
-
-Using HW1 setup:
-16 1.443757e-05 1.719228e-05 8.662542e-06 6.567940e-06 1.075533e-05 5.755552e-06 
-32 7.944637e-05 1.975039e-04 5.711450e-05 1.427614e-04 7.600254e-05 1.864168e-04 
-64 8.450614e-06 1.078673e-06 7.232030e-06 2.459810e-06 9.112888e-06 1.560495e-06 
-128 9.457270e-06 6.743496e-07 7.470449e-06 6.928283e-07 9.748671e-06 1.207592e-06 
-256 9.377797e-06 4.495664e-07 7.761849e-06 3.392497e-07 1.009305e-05 3.178914e-07 
-512 1.178847e-05 4.511247e-07 1.200040e-05 8.486124e-06 1.213286e-05 7.659505e-07 
-1024 1.441108e-05 2.339018e-06 1.234478e-05 4.866410e-06 1.592106e-05 2.670992e-06 
-
-We can see that the mympi.a library is at least 3 orders of magnitude slower than the native MPI implementation.
+The implementation has been done using C sockets instead of the provided interface. The library is parallel and can handle more than just the rtt program. Separate linked-lists for messages and requests is implemented for when the MPI_Recv and the actual message do not come at the same time. Mutex has been used to make sure that the list operations are atomic. Conditional variables have also been used to signal the thread waiting on MPI_Recv when the appropriate message has been received for that request. The use of message buffers (in the form of linked-list) ensures that even if threads are waiting on MPI_Recv, the library can still receive messages from all nodes in the system and buffer them. It has support for sending and receiving Integers, Doubles, and Bytes. More data types can be added with just a “#define” in the header file. Overall I believe that this library has been made very versatile and that new features can be added quite easily. Asynchronous sends and recieves should be trivial to implement as part of this design as well.
